@@ -1,6 +1,6 @@
 require "rspec-spy/version"
 
-module Rspec
+module RSpec
   module Spy
     # Your code goes here...
   end

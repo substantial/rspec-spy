@@ -4,8 +4,8 @@ require File.expand_path('../lib/rspec-spy/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Aaron Jensen"]
   gem.email         = ["aaronjensen@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Enables AAA testing for rspec-mock}
+  gem.summary       = "rspec-spy-#{RSpec::Spy::VERSION}"
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
@@ -13,5 +13,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "rspec-spy"
   gem.require_paths = ["lib"]
-  gem.version       = Rspec::Spy::VERSION
+  gem.version       = RSpec::Spy::VERSION
+
+  gem.add_dependency 'rspec', '~> 2.0'
+  gem.add_dependency 'rspec-mocks', '~> 2.0'
 end
