@@ -1,10 +1,23 @@
 require 'rspec-spy/version'
 
 require 'rspec/matchers'
-RSpec::Matchers.define :have_received do |sym, args, block|
-  
-end
+require 'rspec/mocks'
 
+RSpec::Mocks::Methods.class_eval do
+  def should_receive_with_spy_check(*args, &block)
+    should_receive!(*args, &block)
+  end
+
+  alias_method :should_receive!, :should_receive
+  alias_method :should_receive, :should_receive_with_spy_check
+
+  def should_not_receive_with_spy_check(*args, &block)
+    should_not_receive!(*args, &block)
+  end
+
+  alias_method :should_not_receive!, :should_not_receive
+  alias_method :should_not_receive, :should_receive_with_spy_check
+end
 
 require 'rspec/core/hooks'
 module RSpec
@@ -18,16 +31,32 @@ module RSpec
         @example_group = example_group
       end
 
-      def it(description, &block)
+      def example_method(method, description, *args, &block)
         @example_group.context do
           let(:__spy__, &block)
 
-          it description do
+          send(method, description, *args) do
           end
         end
       end
 
-      alias :specify :it
+      [
+        :example,
+        :it,
+        :specify,
+        :focused,
+        :focus,
+        :pending,
+        :xexample,
+        :xit,
+        :xspecify
+      ].each do |name|
+        module_eval(<<-END_RUBY, __FILE__, __LINE__)
+          def #{name}(desc=nil, *args, &block)
+            example_method(:#{name}, desc, *args, &block)
+          end
+        END_RUBY
+      end
     end
 
     module ExampleGroupMethods

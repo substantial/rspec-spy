@@ -18,14 +18,18 @@ describe RSpec::Spy do
     it "should work with should_receive" do
       collaborator.should_receive :message
     end
+  end
 
-    # it "should work with should have_received" do
-    #   collaborator.should have_received :message
-    # end
+  context do
+    spy do
+      it "should work in nested contexts" do
+        collaborator.should_receive :message
+      end
+    end
   end
 
   spy do
-    specify "should foobar" do
+    specify "should work with specify" do
       collaborator.should_receive :message
     end
   end
