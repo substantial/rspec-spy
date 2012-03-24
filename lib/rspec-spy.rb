@@ -16,7 +16,7 @@ RSpec::Mocks::Methods.class_eval do
   end
 
   alias_method :should_not_receive!, :should_not_receive
-  alias_method :should_not_receive, :should_receive_with_spy_check
+  alias_method :should_not_receive, :should_not_receive_with_spy_check
 end
 
 require 'rspec/core/hooks'

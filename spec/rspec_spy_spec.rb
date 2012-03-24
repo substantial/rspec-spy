@@ -18,6 +18,14 @@ describe RSpec::Spy do
     it "should work with should_receive" do
       collaborator.should_receive :message
     end
+
+    it "should work with multiple in one spy block" do
+      collaborator.should_receive :message
+    end
+
+    it "should work with not" do
+      collaborator.should_not_receive :other_message
+    end
   end
 
   context do
