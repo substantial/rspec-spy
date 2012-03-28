@@ -28,6 +28,20 @@ describe RSpec::Spy do
     end
   end
 
+  spy do
+    specify "should work with specify" do
+      collaborator.should_receive :message
+    end
+  end
+end
+
+describe RSpec::Spy do
+  let(:collaborator) { stub.as_null_object }
+
+  before do
+    Subject.new.go(collaborator)
+  end
+
   context do
     spy do
       it "should work in nested contexts" do
@@ -35,10 +49,16 @@ describe RSpec::Spy do
       end
     end
   end
+end
 
-  spy do
-    specify "should work with specify" do
-      collaborator.should_receive :message
-    end
+describe RSpec::Spy, "the old way" do
+  let(:collaborator) { stub.as_null_object }
+
+  before do
+    collaborator.should_receive :message
+    Subject.new.go(collaborator)
+  end
+
+  it "should still work" do
   end
 end

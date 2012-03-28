@@ -33,7 +33,7 @@ module RSpec
 
       def example_method(method, description, *args, &block)
         @example_group.context do
-          let(:__spy__, &block)
+          let(:spy_setup, &block)
 
           send(method, description, *args) do
           end
@@ -61,23 +61,8 @@ module RSpec
 
     module ExampleGroupMethods
       def spy(&block)
-        setup_spy_hook
-
         proxy = SpyProxy.new(self)
         proxy.instance_eval(&block)
-      end
-
-      private
-      def setup_spy_hook
-        return if @spy_hook_setup
-
-        let(:__spy__) {}
-        hook = RSpec::Core::Hooks::BeforeHook.new({}) do
-          __spy__
-        end
-
-        hooks[:before][:each].unshift hook
-        @spy_hook_setup = true
       end
     end
   end
@@ -85,4 +70,10 @@ end
 
 RSpec::Core::ExampleGroup.class_eval do
   include RSpec::Spy
+end
+
+RSpec.configure do |config|
+  config.before(:each) do |example|
+    example.spy_setup if example.respond_to? :spy_setup
+  end
 end
