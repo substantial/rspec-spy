@@ -55,7 +55,7 @@ describe RSpec::Spy, "the old way" do
   let(:collaborator) { stub.as_null_object }
 
   before do
-    collaborator.should_receive :message
+    collaborator.should_receive! :message
     Subject.new.go(collaborator)
   end
 

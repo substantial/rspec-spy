@@ -4,64 +4,32 @@ require 'rspec/matchers'
 require 'rspec/mocks'
 
 RSpec::Mocks::Methods.class_eval do
-  def should_receive_with_spy_check(*args, &block)
-    should_receive!(*args, &block)
+  def should_receive_with_spy_check(message, opts={}, &block)
+    __mock_proxy.add_message_expectation(opts[:expected_from] || caller(1)[0], message.to_sym, opts, &block)
+  end
+
+  def should_not_receive_with_spy_check(message, &block)
+    __mock_proxy.add_negative_message_expectation(caller(1)[0], message.to_sym, &block)
   end
 
   alias_method :should_receive!, :should_receive
   alias_method :should_receive, :should_receive_with_spy_check
 
-  def should_not_receive_with_spy_check(*args, &block)
-    should_not_receive!(*args, &block)
-  end
-
   alias_method :should_not_receive!, :should_not_receive
   alias_method :should_not_receive, :should_not_receive_with_spy_check
 end
 
-require 'rspec/core/hooks'
+require 'rspec/core/spy_proxy'
+
 module RSpec
   module Spy
     def self.included(mod)
       mod.extend ExampleGroupMethods
     end
 
-    class SpyProxy
-      def initialize(example_group)
-        @example_group = example_group
-      end
-
-      def example_method(method, description, *args, &block)
-        @example_group.context do
-          let(:spy_setup, &block)
-
-          send(method, description, *args) do
-          end
-        end
-      end
-
-      [
-        :example,
-        :it,
-        :specify,
-        :focused,
-        :focus,
-        :pending,
-        :xexample,
-        :xit,
-        :xspecify
-      ].each do |name|
-        module_eval(<<-END_RUBY, __FILE__, __LINE__)
-          def #{name}(desc=nil, *args, &block)
-            example_method(:#{name}, desc, *args, &block)
-          end
-        END_RUBY
-      end
-    end
-
     module ExampleGroupMethods
       def spy(&block)
-        proxy = SpyProxy.new(self)
+        proxy = RSpec::Core::SpyProxy.new(self)
         proxy.instance_eval(&block)
       end
     end
@@ -77,3 +45,4 @@ RSpec.configure do |config|
     example.spy_setup if example.respond_to? :spy_setup
   end
 end
+
