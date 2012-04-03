@@ -9,7 +9,11 @@ module RSpec
 
       def example_method(method, description, *args, &block)
         @example_group.context do
-          let(:spy_setup, &block)
+          let(:spy_setup) do
+            RSpec::Spy.in_spy_setup = true
+            instance_eval &block
+            RSpec::Spy.in_spy_setup = false
+          end
 
           send(method, description, *args) do
           end

@@ -7,6 +7,8 @@ class Subject
   end
 end
 
+RSpec::Spy.strict_mode = true
+
 describe RSpec::Spy do
   let(:collaborator) { stub.as_null_object }
 
@@ -56,9 +58,19 @@ describe RSpec::Spy, "the old way" do
 
   before do
     collaborator.should_receive! :message
+    collaborator.should_not_receive! :message2
     Subject.new.go(collaborator)
   end
 
   it "should still work" do
+  end
+end
+
+describe RSpec::Spy, "should_receive outside of spy block" do
+  let(:collaborator) { stub.as_null_object }
+
+  it "should warn" do
+    lambda { collaborator.should_receive :message }.should raise_error
+    lambda { collaborator.should_not_receive :message }.should raise_error
   end
 end
