@@ -16,24 +16,20 @@ describe RSpec::Spy do
     Subject.new.go(collaborator)
   end
 
-  spy do
-    it "should work with should_receive" do
-      collaborator.should_receive :message
-    end
-
-    it "should work with multiple in one spy block" do
-      collaborator.should_receive :message
-    end
-
-    it "should work with not" do
-      collaborator.should_not_receive :other_message
-    end
+  it "should work with should_receive", :spy do
+    collaborator.should_receive :message
   end
 
-  spy do
-    specify "should work with specify" do
-      collaborator.should_receive :message
-    end
+  it "should work with multiple in one spy block", :spy do
+    collaborator.should_receive :message
+  end
+
+  it "should work with not", :spy do
+    collaborator.should_not_receive :other_message
+  end
+
+  specify "should work with specify", :spy do
+    collaborator.should_receive :message
   end
 end
 
@@ -45,10 +41,8 @@ describe RSpec::Spy do
   end
 
   context do
-    spy do
-      it "should work in nested contexts" do
-        collaborator.should_receive :message
-      end
+    it "should work in nested contexts", :spy do
+      collaborator.should_receive :message
     end
   end
 end
@@ -75,25 +69,27 @@ describe RSpec::Spy, "should_receive outside of spy block" do
   end
 end
 
-describe RSpec::Spy, "shorthand" do
+describe RSpec::Spy, "setting on context" do
   let(:collaborator) { stub.as_null_object }
 
   before do
     Subject.new.go(collaborator)
   end
 
-  spy.it "should work in nested contexts" do
-    collaborator.should_receive :message
+  context "spies", :spy do
+    it "should work" do
+      collaborator.should_receive :message
+    end
   end
 end
 
 describe RSpec::Spy, "nil warning" do
-  spy.it "should warn me if I try to should_receive on nil" do
+  it "should warn me if I try to should_receive on nil", :spy do
     lambda { @unknown.should_receive :message }.should raise_error
     lambda { @unknown.should_not_receive :message }.should raise_error
   end
 
-  spy.it "should not warn me if I allow message expectations on nil" do
+  it "should not warn me if I allow message expectations on nil", :spy do
     RSpec::Mocks::Proxy.allow_message_expectations_on_nil
     lambda { @unknown.should_not_receive :message }.should_not raise_error
   end

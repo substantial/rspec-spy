@@ -1,14 +1,14 @@
 module RSpec
   module Spy
     class << self
-      attr_accessor :in_spy_setup
+      attr_accessor :in_run_spy
       attr_accessor :strict_mode
-      alias_method :in_spy_setup?, :in_spy_setup
+      alias_method :in_run_spy?, :in_run_spy
       alias_method :strict_mode?, :strict_mode
 
       def ok_to_spy?
         return true unless strict_mode?
-        in_spy_setup?
+        in_run_spy?
       end
     end
   end

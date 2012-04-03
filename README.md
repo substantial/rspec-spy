@@ -1,8 +1,9 @@
 # RSpec::Spy
 
 This gem allows you to write mock expectations in an AAA (Arrange-Act-Assert) fashion
-with RSpec::Mocks. It does this by allowing you to declare examples within a `spy` block,
-which is effectively executed before everything else. Here's a simple example:
+with RSpec::Mocks. It does this by allowing you to declare examples with `:spy => true`
+or `:spy` (if you use `config.treat_symbols_as_metadata_keys_with_true_values = true`)
+so that they are effectively executed before everything else. Here's a simple example:
 
 ``` ruby
 describe "Example" do
@@ -12,14 +13,12 @@ describe "Example" do
     collaborator.message
   end
 
-  spy do
-    it "should receive a message" do
-      collaborator.should_receive :message
-    end
+  it "should receive a message", :spy => true do
+    collaborator.should_receive :message
+  end
 
-    it "should not receive other_message" do
-      collaborator.should_not_receive :other_message
-    end
+  it "should not receive other_message", :spy => true do
+    collaborator.should_not_receive :other_message
   end
 end
 ```
@@ -55,19 +54,18 @@ RSpec::Spy.strict_mode = true
 
 ## Usage
 
-Just put your spy expectations within `spy` blocks in your specs instead of in `before` blocks.
+Just tag your examples with `:spy => true` or `:spy` (if you use
+`config.treat_symbols_as_metadata_keys_with_true_values = true`)
 You should be able to use all of the functionality from rspec-mocks that you're
 used to, including spying on class methods.
 
 ``` ruby
-spy do
-  it "should receive message" do
-    collaborator.should_receive :message
-  end
+it "should receive message", :spy => true do
+  collaborator.should_receive :message
 end
 
-# Shorthand:
-spy.it "should receive message" do
+# with config.treat_symbols_as_metadata_keys_with_true_values = true
+it "should receive message", :spy do
   collaborator.should_receive :message
 end
 ```
@@ -89,14 +87,12 @@ describe "what not to do" do
 
   # These will fail because @collaborator is nil because this happens
   # before the above before block
-  spy do
-    it "should receive a message" do
-      @collaborator.should_receive :message
-    end
+  it "should receive a message", :spy => true do
+    @collaborator.should_receive :message
+  end
 
-    it "should not receive other_message" do
-      @collaborator.should_not_receive :other_message
-    end
+  it "should not receive other_message", :spy => true do
+    @collaborator.should_not_receive :other_message
   end
 end
 ```
@@ -121,10 +117,8 @@ describe "stubbing and mocking at the same time" do
     @result.should == 5
   end
 
-  spy do
-    it "should receive a message" do
-      collaborator.should_receive(:message).and_return(5)
-    end
+  it "should receive a message", :spy => true do
+    collaborator.should_receive(:message).and_return(5)
   end
 end
 ```
