@@ -38,8 +38,6 @@ Or install it yourself as:
 
     $ gem install rspec-spy
 
-## Usage
-
 Add to your spec_helper.rb:
 
 ``` ruby
@@ -55,8 +53,11 @@ add this to your spec_helper.rb:
 RSpec::Spy.strict_mode = true
 ```
 
-Now just put your spy expectations within spy blocks in your specs. You should be able to
-use all of the functionality from rspec-mocks that you're used to, including spying on
+## Usage
+
+Just put your spy expectations within spy blocks in your specs instead of in before blocks.
+You should be able to use all of the functionality from rspec-mocks that you're
+used to, including spying on
 class methods.
 
 ``` ruby
