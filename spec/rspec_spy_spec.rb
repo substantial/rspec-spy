@@ -86,3 +86,16 @@ describe RSpec::Spy, "shorthand" do
     collaborator.should_receive :message
   end
 end
+
+describe RSpec::Spy, "nil warning" do
+  spy.it "should warn me if I try to should_receive on nil" do
+    lambda { @unknown.should_receive :message }.should raise_error
+    lambda { @unknown.should_not_receive :message }.should raise_error
+  end
+
+  spy.it "should not warn me if I allow message expectations on nil" do
+    RSpec::Mocks::Proxy.allow_message_expectations_on_nil
+    lambda { @unknown.should_not_receive :message }.should_not raise_error
+  end
+end
+
