@@ -5,7 +5,12 @@ module RSpec
     module ExampleGroupMethods
       def spy(&block)
         proxy = RSpec::Core::SpyProxy.new(self)
-        proxy.instance_eval(&block)
+
+        if block
+          proxy.instance_eval(&block)
+        else
+          proxy
+        end
       end
     end
   end

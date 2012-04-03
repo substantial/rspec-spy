@@ -74,3 +74,15 @@ describe RSpec::Spy, "should_receive outside of spy block" do
     lambda { collaborator.should_not_receive :message }.should raise_error
   end
 end
+
+describe RSpec::Spy, "shorthand" do
+  let(:collaborator) { stub.as_null_object }
+
+  before do
+    Subject.new.go(collaborator)
+  end
+
+  spy.it "should work in nested contexts" do
+    collaborator.should_receive :message
+  end
+end

@@ -59,6 +59,19 @@ Now just put your spy expectations within spy blocks in your specs. You should b
 use all of the functionality from rspec-mocks that you're used to, including spying on
 class methods.
 
+``` ruby
+spy do
+  it "should receive message" do
+    collaborator.should_receive :message
+  end
+end
+
+# Shorthand:
+spy.it "should receive message" do
+  collaborator.should_receive :message
+end
+```
+
 ## Warnings
 
 * This is a hack, you'll want to make sure everyone on your team is aware of the behavior
