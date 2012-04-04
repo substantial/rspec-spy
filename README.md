@@ -129,6 +129,7 @@ end
 * [bourne](https://github.com/thoughtbot/bourne)
 * [rspec-spies](https://github.com/technicalpickles/rspec-spies)
 * [gimme](https://github.com/searls/gimme)
+* [fakes-rspec](https://github.com/developwithpassion/fakes-rspec)
 
 ## Contributing
 
