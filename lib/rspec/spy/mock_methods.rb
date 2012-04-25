@@ -1,25 +1,22 @@
 require 'rspec/mocks'
 
 RSpec::Mocks::Methods.class_eval do
-  def should_receive_with_spy_check(message, opts={}, &block)
-    spy_check(:should_receive)
-    nil_check(:should_receive)
+  def should_have_received(message, opts={}, &block)
+    check(:should_have_received)
     __mock_proxy.add_message_expectation(opts[:expected_from] || caller(1)[0], message.to_sym, opts, &block)
   end
 
-  def should_not_receive_with_spy_check(message, &block)
-    spy_check(:should_not_receive)
-    nil_check(:should_not_receive)
+  def should_not_have_received(message, &block)
+    check(:should_not_have_received)
     __mock_proxy.add_negative_message_expectation(caller(1)[0], message.to_sym, &block)
   end
 
-  alias_method :should_receive!, :should_receive
-  alias_method :should_receive, :should_receive_with_spy_check
-
-  alias_method :should_not_receive!, :should_not_receive
-  alias_method :should_not_receive, :should_not_receive_with_spy_check
-
   private
+
+  def check(method)
+    spy_check(method)
+    nil_check(method)
+  end
 
   def spy_check(method)
     return if RSpec::Spy.ok_to_spy?

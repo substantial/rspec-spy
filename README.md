@@ -14,11 +14,11 @@ describe "Example" do
   end
 
   it "should receive a message", :spy => true do
-    collaborator.should_receive :message
+    collaborator.should_have_received :message
   end
 
   it "should not receive other_message", :spy => true do
-    collaborator.should_not_receive :other_message
+    collaborator.should_not_have_received :other_message
   end
 end
 ```
@@ -43,15 +43,6 @@ Add to your spec_helper.rb:
 require 'rspec-spy'
 ```
 
-If you want to be warned when using `should_receive` outside of `spy` blocks (recommended)
-add this to your `spec_helper.rb`:
-
-``` ruby
-# Require should_receive and should_not_receive to be inside spy blocks
-# Use should_receive! and should_not_receive! outside spy blocks
-RSpec::Spy.strict_mode = true
-```
-
 ## Usage
 
 Just tag your examples with `:spy => true` or `:spy` (if you use
@@ -61,12 +52,12 @@ used to, including spying on class methods.
 
 ``` ruby
 it "should receive message", :spy => true do
-  collaborator.should_receive :message
+  collaborator.should_have_received :message
 end
 
 # with config.treat_symbols_as_metadata_keys_with_true_values = true
 it "should receive message", :spy do
-  collaborator.should_receive :message
+  collaborator.should_have_received :message
 end
 ```
 
@@ -88,11 +79,11 @@ describe "what not to do" do
   # These will fail because @collaborator is nil because this happens
   # before the above before block
   it "should receive a message", :spy => true do
-    @collaborator.should_receive :message
+    @collaborator.should_have_received :message
   end
 
   it "should not receive other_message", :spy => true do
-    @collaborator.should_not_receive :other_message
+    @collaborator.should_not_have_received :other_message
   end
 end
 ```
@@ -118,7 +109,7 @@ describe "stubbing and mocking at the same time" do
   end
 
   it "should receive a message", :spy => true do
-    collaborator.should_receive(:message).and_return(5)
+    collaborator.should_have_received(:message).and_return(5)
   end
 end
 ```
