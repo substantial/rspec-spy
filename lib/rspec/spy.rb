@@ -9,5 +9,9 @@ module RSpec
       end
     end
   end
+
+  def self.Spy(example)
+    example.example.run_spy
+  end
 end
 

@@ -11,9 +11,3 @@ RSpec::Core::Example.class_eval do
   end
 end
 
-RSpec.configure do |config|
-  config.before(:each, :spy => true) do |example|
-    example.example.run_spy
-  end
-end
-

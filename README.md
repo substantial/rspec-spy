@@ -37,12 +37,14 @@ Or install it yourself as:
 
     $ gem install rspec-spy
 
-Add to your spec_helper.rb **AFTER any other global before hooks, especially DatabaseCleaner**:
+Add to your spec_helper.rb in `RSpec.configure` **AFTER any other global before hooks, especially DatabaseCleaner**:
 
 ``` ruby
 # any config.before hooks should go above
 
-require 'rspec-spy'
+config.before(:each, :spy => true) do |example|
+  RSpec::Spy(example)
+end
 ```
 
 ## Usage

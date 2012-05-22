@@ -20,13 +20,13 @@ RSpec::Mocks::Methods.class_eval do
 
   def spy_check(method)
     return if RSpec::Spy.ok_to_spy?
-    raise "#{method} should not be used outside of a spy block. Please put it in a spy block or use #{method}!."
+    raise "#{method} was called before RSpec::Spy(example). Make sure that your example is properly tagged (generally with :spy => true) and you have a before hook in your RSpec.configure that calls RSpec::Spy(example)."
   end
 
   def nil_check(method)
     return if RSpec::Mocks::Proxy.allow_message_expectations_on_nil?
     return unless nil?
-    raise "You set an expectation on nil, maybe you're using an @instance_var? If you want to do this, use allow_message_expectations_on_nil."
+    raise "You set an expectation on nil, maybe you're using an @instance_var before it is set? If you want to do this, use allow_message_expectations_on_nil."
   end
 end
 
