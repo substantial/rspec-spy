@@ -25,7 +25,7 @@ end
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile in the `:test` group
 
     gem 'rspec-spy'
 
@@ -42,6 +42,7 @@ Add to your spec_helper.rb in `RSpec.configure` **AFTER any other global before 
 ``` ruby
 # any config.before hooks should go above
 
+require 'rspec-spy'
 config.before(:each, :spy => true) do |example|
   RSpec::Spy(example)
 end
