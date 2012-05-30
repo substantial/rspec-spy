@@ -1,3 +1,7 @@
+## Version 1.1.1
+
+* Fixed problem with some projects getting RSpec::Core not defined
+
 ## Version 1.1.0
 
 * `rspec-spy` no longer sets up the before hook for you, you need to do that manually. See the README
