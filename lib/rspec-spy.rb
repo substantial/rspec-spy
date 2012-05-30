@@ -1,3 +1,5 @@
+require 'rspec/core'
+
 require 'rspec/spy/version'
 require 'rspec/spy'
 require 'rspec/spy/mock_methods'
